@@ -8426,3 +8426,18 @@ near Qc125's 54% vs book 0.76, held (+0.065 dBrier; PQ sibling +0.025).
 Do not shade below the book on one riding projection when an incumbent
 holds the seat; record at or near the mid unless a second model agrees.
 n=1.
+
+Rewritten (RETRO-20261006-2330, n=5 riding rows): incumbency was the
+wrong handle. The favourite won all five, and the more confident source
+was closer each time. Book above Qc125 on the same favourite, 3 of 3:
+Jean-Lesage (54 vs 0.76), Hochelaga-Maisonneuve `2d634083dd78` (65 vs
+0.87, own 0.75, +0.046), Saint-Henri-Sainte-Anne `0cdee07f6243` (55 vs
+0.70, own 0.56, +0.104) - and in Saint-Henri the book's favourite was
+the challenger, not the incumbent. Qc125 above the book, 1 of 1:
+Saint-Francois `a3314a17c247` (97 vs 0.69, own 0.82, -0.064). Rule: on a
+riding row, when the book is more confident than the single riding
+projection on the same favourite, record the mid (market-agrees), with
+or without an incumbent. When the projection is at 90 or above and the
+book is lower, record no lower than halfway between them. Neither case
+is a bet on its own: these books run spreads of 0.07-0.14 and the
+wide-spread veto still applies.
