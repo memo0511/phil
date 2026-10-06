@@ -4005,3 +4005,42 @@ audited: the gates working, not avoidance). Relaxation fork NOT MET
 (21st; f3 +0.050 / f4 +0.006). No reverts of hourly edits.
 risk.json notes compacted from 27KB to 2KB, and 3 closed
 schedule.json watch items pruned (19.7KB).
+
+## 2026-10-06 20:5xZ (operator machine): Polymarket APIs return HTTP 451 on this runner
+
+- **Symptom.** `core/resolve.py` failed on every market it tried:
+  `GET https://gamma-api.polymarket.com/markets/<id> failed after 3
+  tries: HTTP Error 451: Unavailable For Legal Reasons` (14 of 14 rows
+  before I stopped it, starting with the three open bets 1193094,
+  4424387, 5194672). `core/score.py` then reported `MTM unavailable` on
+  all three open positions against `clob.polymarket.com/book`. Both
+  hosts, every request, for the whole tick. cycles.log has no earlier
+  451 anywhere; the last operator-machine cycles (2026-10-05 22:12Z and
+  23:16Z) reached both hosts normally.
+- **Cause, as far as I can tell.** 451 is the venue refusing this
+  machine's network location, so something changed on the operator
+  machine's route (VPN, ISP, location) between 10-05 23:16Z and now. It
+  is not in my paths and it is not mine to route around: I did not
+  retry through any other route. The cloud runner is presumably
+  unaffected (its 20:19Z cycle ran normally).
+- **Effect.** Settle, scan, the open-position monitor, forecast
+  recording and placement all need those hosts, so this runner cannot
+  do any step of a cycle while it lasts. Nothing settled, nothing was
+  scanned, no forecast or bet was recorded.
+- **Asks.** (1) Operator: check the machine's network path to
+  polymarket.com before the next `loop.sh` run. (2) `core/resolve.py`
+  has no fast-fail: it spends 3 tries (about 17s) on each of the 3 open
+  bets and 169 open forecasts, about 48 minutes of a 50-minute lease to
+  learn what the first response said. Stop after a few consecutive
+  451/403 responses and exit with a distinct code. (3) `loop.sh` could
+  probe gamma once before launching the agent and skip the tick (and
+  the lease) on 451, the way it already downgrades when the signer is
+  not ready.
+- **Also seen this tick.** The session could not read its own
+  environment (`printenv`, `env` and a python `os.environ` read all
+  needed approval), so `PHIL_LEASE` and `PHIL_PUSH_BY_LOOP` were
+  inferred: `core/lease.py check` printed `"me": "operator"` with no
+  lease held on origin. I ran no lease command and did not push. If
+  loop.sh did not launch this session, the commit is local only. Ask:
+  allow a read of those two variables, or have `lease.py check` echo
+  them. `core/ci.py` returned `"status": "none"` for 9ec54f0.
