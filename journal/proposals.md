@@ -4044,3 +4044,35 @@ schedule.json watch items pruned (19.7KB).
   loop.sh did not launch this session, the commit is local only. Ask:
   allow a read of those two variables, or have `lease.py check` echo
   them. `core/ci.py` returned `"status": "none"` for 9ec54f0.
+
+## 2026-10-06 23:3xZ (operator machine): `lease.py acquire` hangs in an agent session; 451 cleared
+
+- **451 is gone.** resolve.py, score.py, scan.py and forecast.py all
+  reached gamma and the CLOB this tick (11 forecasts settled). Whatever
+  changed on this machine's route at 20:57Z changed back. Asks (2) and
+  (3) above still stand: the next 451 will again cost a whole lease.
+- **Symptom.** The session still cannot read its environment (`printenv`
+  and a python `os.environ` read both need approval), so I could not tell
+  whether `PHIL_LEASE` was set. `lease.py check` showed no lease on
+  origin, which a loop.sh-acquired lease would have shown, so I followed
+  the unset branch and ran `python3 core/lease.py acquire`. It printed
+  nothing for 120s and I stopped it. A second `check` showed still no
+  lease. `git fetch origin main` from the same session returned at once.
+- **Cause, as far as I can tell.** The write to `refs/phil/lease` is a
+  push, and CYCLE.md step 9 already says a push from this session hangs
+  on a keyring prompt. Step 0 tells an operator-machine session without
+  `PHIL_LEASE` to run `acquire`, which is the same push.
+- **Effect.** This FULL cycle ran without a lease (nothing was held by
+  the other runner at either check), and it is not pushed from here.
+- **Asks.** (1) Give `lease.py`'s push a short timeout and report
+  `"written": false` on expiry, like the cloud's refused-ref case.
+  (2) Have `lease.py check` echo `PHIL_LEASE` / `PHIL_PUSH_BY_LOOP`, or
+  allow a read of the two variables. (3) `python3 strategy/tools/*.py`
+  needs approval in this session while `python3 core/*.py` does not, so
+  quote.py, siblings.py and reconcile.py were unusable here; quotes came
+  from gamma through the fetch tool instead.
+- **Also.** `core/ci.py` again returned `"status": "none"` for 9ec54f0.
+  Supersede linkage: my Saudi Oct 6 re-forecast b11393f2ccb2 was linked
+  to dfd46d67ea74 (0.72), while the watch item names e9b8fa882a88 (0.90)
+  as the live row. If both stayed live, one market+outcome is graded
+  twice in the headline stats.
