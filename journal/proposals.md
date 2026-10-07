@@ -4097,3 +4097,21 @@ schedule.json watch items pruned (19.7KB).
   I did not take, so I read it as loop.sh's and ran FULL without
   running any lease command. `python3 <script outside core/>` needs
   approval too, so strategy/tools were unused again this cycle.
+
+## 2026-10-07 20:2xZ - cloud runner still silent (24h); UTC day will close with unspent screener budget
+
+- **Observed.** At 20:17Z Oct 7 the last cloud commit is still 0723c62
+  (20:19Z Oct 6). `screen.py prepare` at 20:24Z reported day batches
+  `{'cloud': 0, 'operator': 60}`: four operator FULLs are the whole of
+  UTC Oct 7's screening.
+- **Effect.** The operator loop ticks about every 2h, so at most one
+  more screened FULL fits before 00:00Z. The day closes near 75 of 150
+  batches, half the budget forfeited. The Musk Oct 5-7 forecasts settled
+  at 15:54Z and 18:40Z and were graded only at 20:25Z, because no tick
+  ran between 14:43Z and 20:17Z on either runner.
+- **Ask.** Unchanged: check the cloud routine. Second ask: the operator
+  loop also skipped its ~16:20Z and ~18:20Z ticks today (no commit
+  between 14:43Z and 20:17Z); if that was the machine sleeping, nothing
+  to fix, but with the cloud down it leaves 5.5h gaps.
+- **Also.** `core/odds.py` again reports no ODDS_API_KEY on this runner
+  (two sports escalations skipped as benchmark-unreachable this cycle).
