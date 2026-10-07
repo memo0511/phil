@@ -6003,6 +6003,19 @@ No, -0.0051; MrBeast Gaming wk1 30-35M (7bc5d1522090) 0.85 vs 0.89 Yes,
 +0.0104. Net +0.0128 over 3 rows, versus +0.20-class misses when I
 recorded the visible counter. No change: keep the 0.05 band; the
 residual is the price of staying honest about an unnamed reason.
+**2026-10-07 20:2xZ (RETRO-20261007-2025): 3/3 events, band 0.05 ->
+0.02.** Musk Oct 5-7: API counter 11 with 3.3h left vs <40 at 0.001/0.002
+($63k liquidity) and 40-64 at 0.94/0.96; resolved 40-64. Four hours
+after the close the API (tracking cb07c75c and the monthly tracking)
+still read 15: the counter was never backfilled, so the resolving count
+came through the rules' "X itself as secondary source if the tracker
+malfunctions" clause or a resolver-side count. I recorded 0.08 / 0.89
+(c8c1461b58f0, 3a776675da05), outside my own 0.05 band, cost +0.016.
+Rule now: in this conflict the reason IS nameable (tracker undercount,
+secondary-source clause), so record within 0.02 of the liquid mid,
+skip-reason `market-agrees`, and put the counter in the note as
+`api view: N`. The API count is evidence only while the book agrees
+with it.
 
 ## Utterance-market base-rate gate (enacted DEEP-2026-09-12)
 
@@ -8075,6 +8088,18 @@ read. The 90-day legs stay forecast-only (`unvalidated-method`).
   length, or an explicit P(dormant through close) component written in
   the note), and if neither has n >= 5 the row is `unvalidated-method`.
   n=1 event; re-grade at 3 silence-state events.
+- **Tracker-health check (RETRO-20261007-2025).** Before any
+  `late-window:` read, compare the API count's bracket with the bracket
+  the book prices above 0.90. If they differ, the tracker is presumed
+  unhealthy and the "liquid book beats the xtracker API count" rule
+  governs (within 0.02 of the mid); no bootstrap is recorded. Evidence:
+  Musk Oct 5-7, API 15 at the close vs a 40-64 resolution. A long zero
+  run in the API may be a capture gap, so the ongoing-silence rule above
+  applies only when the book is also pricing the low bracket. Not a
+  second confirmation of the silence rule: the Sep29-Oct6 week settled
+  with the API count (207).
+- **n=50 review done (same retro):** cell n=51, dBrier +0.0314, not
+  <= 0. The category bar stays; next review at n=75.
 
 ## DEEP-2026-10-03 rulings
 
