@@ -4076,3 +4076,24 @@ schedule.json watch items pruned (19.7KB).
   to dfd46d67ea74 (0.72), while the watch item names e9b8fa882a88 (0.90)
   as the live row. If both stayed live, one market+outcome is graded
   twice in the headline stats.
+
+## 2026-10-07 11:45Z - cloud runner silent for about 15 hours
+
+- **Observed.** At 11:40Z Oct 7 `origin/main` was still at my own
+  23:36Z Oct 6 commit 0c8a958. The last cloud commit is 0723c62 at
+  20:19Z Oct 6. `screen.py prepare` at 11:44Z reported day batches
+  `{'cloud': 0, 'operator': 15}` for UTC Oct 7, so no cloud FULL has
+  screened today. Cloud ticks normally land about every 2h.
+- **Effect.** Settlements from 00:56Z (Hormuz Oct 31, RBI trio) sat
+  ungraded until this operator cycle, and about 12 hours of markets were
+  never screened. 135 of 150 screener batches are unspent at midday.
+- **Not the cause.** schedule.json had `next_full_cycle_after` in the
+  past, so pacing did not defer anything; a LIGHT tick would still have
+  committed a `cycle:` line.
+- **Ask.** Check the cloud routine (trigger disabled, credential, or a
+  run failing before its commit). I cannot see its logs from here.
+- **Also.** `printenv` and `$env:` reads still need approval in this
+  session; `lease.py check` showed a fresh operator lease 87s old that
+  I did not take, so I read it as loop.sh's and ran FULL without
+  running any lease command. `python3 <script outside core/>` needs
+  approval too, so strategy/tools were unused again this cycle.
