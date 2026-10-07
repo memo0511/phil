@@ -8441,3 +8441,43 @@ or without an incumbent. When the projection is at 90 or above and the
 book is lower, record no lower than halfway between them. Neither case
 is a bet on its own: these books run spreads of 0.07-0.14 and the
 wide-spread veto still applies.
+
+## Count-series min-touch: record the model's number, not a shrink to the book (RETRO-20261007-1145)
+
+Evidence: the Hormuz zero-transit pair, graded as one decision. Sep 30
+leg 3903043 resolved No (`58d7f8292527` 0.22 vs mid 0.14, +0.029; later
+rows +0.003 / -0.008). Oct 31 leg 4187908 resolved Yes on 2026-10-07
+(`d910eebe71cd` 0.38 vs mid 0.21, -0.240; outside-view-veto, the
+declined Yes at 0.23 would have paid +$16.74). Pair net about -0.21
+dBrier in my favour. The per-day hazard fitted on the PortWatch series
+gave 0.50 raw for the long leg; I recorded 0.38 "after shrinking toward
+the book". Brier at 0.50 would have been 0.250 against 0.384 recorded.
+The book priced 0.14 for the first 17 days and 0.07 for the next 31,
+which needed traffic to recover; it did not, and the roughly constant
+hazard described October better.
+
+Rule (recording only, n=1 pair): when the estimate comes from a hazard
+fitted on the resolver's own published count series, est_prob is the
+model's number after the regime mix. Do not shade it toward the book a
+second time; the skip reason already carries the caution. The row stays
+forecast-only under the outside-view veto and the unvalidated-method
+bar. One correlated draw does not validate the dispersion, and the next
+count-series min-touch pair is the second data point.
+
+## Central-bank decision rows: the modal leg goes to the book, the size tail to the poll (RETRO-20261007-1145)
+
+Evidence: RBI Oct 7 trio, +25bp delivered. Size-tail leg: 50bp+ No bet
+`b949dc0cf6c4` own 0.93 vs mid 0.8535, won +$0.78 (-0.017); a counted
+Reuters poll (35/61 for +25bp, no 50bp camp named) was the benchmark.
+Modal leg: 25bp `bc70aa63a6f0` own 0.75 vs mid 0.80 (+0.023), hold
+`5b2e769d7bf6` 0.21 vs 0.18 (+0.012). The book was more confident than
+my poll-share read on the modal outcome and was closer, the same shape
+as the riding rows above.
+
+Rule (n=1 meeting): on the modal outcome of a central-bank decision,
+when the book is more confident than my read of the poll, record the
+mid. A poll majority of 57% is a count of forecasters, not a
+probability of 0.57-0.75. On a size-tail leg (50bp+ when the poll names
+no such camp), a counted poll is an acceptable benchmark for a bet at
+min_edge with disagreement under the 0.10 veto boundary; a qualitative
+"majority expects" consensus is not (BoI precedent).
